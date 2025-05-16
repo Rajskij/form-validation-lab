@@ -19,7 +19,6 @@ registrationForm.addEventListener('submit', event => {
     if (!terms.checked) message += 'The terms and conditions must be accepted';
 
     message = message.trim();
-    console.log(message + " " + message.length)
     if (message.length > 0) {
         showMessage(false, false, message);
         return;
@@ -30,12 +29,13 @@ registrationForm.addEventListener('submit', event => {
         email: email.value.toLowerCase(),
         password: password.value
     })
-    console.log(localStorage.getItem(username));
+
     username.value = '';
     email.value = '';
     password.value = '';
     passwordCheck.value = '';
     terms.checked = false;
+
     showMessage(true, false, 'User was successfully created!');
 });
 
@@ -51,12 +51,13 @@ const validateUsername = function(username) {
 const validateEmail = function(email) {
     if (email === '') return 'The email cannot be blank';
 
-    const atPos = email.charAt('@');
-    const dotPos = email.charAt('.');
+    const atPos = email.indexOf('@');
+    const dotPos = email.indexOf('.');
 
     if (email.length < 6) return 'The email must contain at least 6 character';
     if (atPos < 2) return 'The email must contain "@" character';
-    if (dotPos - atPos < 2) return 'The email must contain "." character';
+    if (dotPos < 2) return 'The email must contain "." character';
+    if (dotPos - atPos < 2) return 'You must include a domain name after the @ symbol';
     if (/^.+@example\.com$/.test(email)) return 'The email must not be from the domain "example.com."'
 
     return '';
